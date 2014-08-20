@@ -58,6 +58,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="docs\index.html" />
+    <Content Include="example\unit-tests.html" />
+    <TypeScriptCompile Include="example\unit-tests.ts" />
     <TypeScriptCompile Include="TSTest.ts" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
