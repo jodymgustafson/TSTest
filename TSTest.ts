@@ -1,5 +1,6 @@
-module TSTest
+namespace TSTest
 {
+    "use strict";
     class AssertInfo
     {
         actual: any;
@@ -22,6 +23,27 @@ module TSTest
             Assert.areIdentical(false, b, name);
         }
 
+        /** Asserts that a value is null or undefined */
+        public static isNullOrUndefined(val: any): void
+        {
+            if (!(val === null || typeof val === "undefined"))
+                Assert.fail("null or undefined", val);
+        }
+
+        /** Asserts that a value is null or undefined */
+        public static isNotNullOrUndefined(val: any): void
+        {
+            if ((val === null || typeof val === "undefined"))
+                Assert.fail("not null or undefined", val);
+        }
+
+        /** Asserts that a value is undefined */
+        public static isUndefined(val: any): void
+        {
+            if (typeof val !== "undefined")
+                Assert.fail("undefined", val);
+        }
+
         /** Determines if two objects are identical using strict equality operator (===) */
         public static areIdentical(expected: any, actual: any, name: string = ""): void
         {
@@ -36,6 +58,26 @@ module TSTest
             if (expected === actual)
             {
                 Assert.fail(expected, actual, name);
+            }
+        }
+
+        /** Determines if the members of two arrays are equal */
+        public static areArraysEqual(expected: any[], actual: any[], name: string = "")
+        {
+            Assert.areIdentical(expected.length, actual.length, name);
+            for (var i = 0; i < expected.length; i++)
+            {
+                Assert.areEqual(expected[i], actual[i]);
+            }
+        }
+
+        /** Determines if the members of two arrays are identical */
+        public static areArraysIdentical(expected: any[], actual: any[], name: string = "")
+        {
+            Assert.areIdentical(expected.length, actual.length, name);
+            for (var i = 0; i < expected.length; i++)
+            {
+                Assert.areIdentical(expected[i], actual[i]);
             }
         }
 
@@ -123,7 +165,7 @@ module TSTest
 
         public testFailed(expected: string, actual: string, name = "Result"): void
         {
-            var msg = (name || "unnamed") + ": Expected: " + expected + ", Actual: " + actual;
+            var msg = "Unit test '" + (name || "unnamed") + "': Expected: '" + expected + "', Actual: '" + actual + "'";
             var div = this.createDiv(msg, "test-fail");
             this.curElement.appendChild(div);
             this.propogateFail();
@@ -204,7 +246,7 @@ module TSTest
 
         public testFailed(expected: string, actual: string, name = "Result"): void
         {
-            var msg = (name || "unnamed") + ": Expected: " + expected + ", Actual: " + actual;
+            var msg = "Unit test '" + (name || "unnamed") + "': Expected: '" + expected + "', Actual: '" + actual + "'";
             this.error(msg);
         }
 
@@ -306,6 +348,18 @@ module TSTest
                 this.logs.forEach((log) => log.error(this.errorCount + " tests failed"));
             }
             this.logs.forEach((log) => log.endTestGroup());
+        }
+
+        /** Runs all of the unit tests after the DOM has been loaded
+         * @param init An optional function to call before the tests are run
+         */
+        public runWhenDOMReady(init?: () => any): void
+        {
+            window.addEventListener("DOMContentLoaded",() =>
+            {
+                if (init) init();
+                this.run();
+            });
         }
 
         private runUnitTest(unitTest: UnitTest): number
