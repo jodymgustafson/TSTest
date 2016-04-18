@@ -1,0 +1,6 @@
+*.js
+*.map
+*.user
+.vs/*
+bin/*
+obj/*

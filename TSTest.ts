@@ -101,10 +101,11 @@ namespace TSTest
         /** Throws a fail exception */
         public static fail(expected: any, actual: any, name: string = ""): void
         {
-            var info = new AssertInfo();
-            info.name = name;
-            info.expected = expected;
-            info.actual = actual;
+            var info: AssertInfo = {
+                name: name,
+                expected: expected,
+                actual: actual
+            };
             throw info;
         }
     }

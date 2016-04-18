@@ -1,51 +1,55 @@
 ﻿/// <reference path="../TSTest.ts" />
-class Calculator
+namespace TSTestExample
 {
-    public add(a: number, b: number): number
+    class Calculator
     {
-        return a + b;
-    }
-    public subtract(a: number, b: number): number
-    {
-        return a - b;
-    }
-}
-
-class CalculatorUnitTests extends TSTest.UnitTest
-{
-    private calculator: Calculator;
-
-    // Override setUp to create the calculator instance
-    public setUp()
-    {
-        this.calculator = new Calculator();
-    }
-    // Override tearDown to remove the calculator instance
-    public tearDown()
-    {
-        this.calculator = null;
+        public add(a: number, b: number): number
+        {
+            return a + b;
+        }
+        public subtract(a: number, b: number): number
+        {
+            return a - b;
+        }
     }
 
-    // Test methods must begin with "test"
-    public testAdd()
+    class CalculatorUnitTests extends TSTest.UnitTest
     {
-        this.assert.areIdentical(4, this.calculator.add(3, 1), "add(3, 1) is 4");
-        this.assert.notIdentical(5, this.calculator.add(3, 1), "add(3, 1) is not 5");
-    }
-    public testSubtract()
-    {
-        this.assert.areIdentical(4, this.calculator.subtract(5, 1), "subtract(5, 1) is 4");
-        this.assert.notIdentical(5, this.calculator.subtract(5, 1), "subtract(5, 1) is not 5");
-    }
-}
+        private calculator: Calculator;
 
-window.addEventListener("DOMContentLoaded", () =>
-{
+        // Override setUp to create the calculator instance
+        public setUp()
+        {
+            this.calculator = new Calculator();
+        }
+        // Override tearDown to remove the calculator instance
+        public tearDown()
+        {
+            this.calculator = null;
+        }
+
+        // Test methods must begin with "test"
+        public testAdd()
+        {
+            this.assert.areIdentical(4, this.calculator.add(3, 1), "add(3, 1) is 4");
+            this.assert.notIdentical(5, this.calculator.add(3, 1), "add(3, 1) is not 5");
+        }
+        public testSubtract()
+        {
+            this.assert.areIdentical(4, this.calculator.subtract(5, 1), "subtract(5, 1) is 4");
+            this.assert.notIdentical(5, this.calculator.subtract(5, 1), "subtract(5, 1) is not 5");
+        }
+    }
+
     var testSuite = new TSTest.UnitTestSuite();
-    // Log out to document
-    testSuite.addLogger(new TSTest.ElementLogger());
     // Add our unit tests
     testSuite.addUnitTest(new CalculatorUnitTests());
+
+
     // Run it
-    testSuite.run();
-});
+    testSuite.runWhenDOMReady(() =>
+    {
+        // Log out to document
+        testSuite.addLogger(new TSTest.ElementLogger());
+    });
+}
